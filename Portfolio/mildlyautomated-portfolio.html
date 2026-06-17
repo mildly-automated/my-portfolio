@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mildlyautomated | Nellie, Technical Writer & AI/Automation Coach</title>
+<meta name="description" content="Technical writing, AI tooling, and automation coaching for non-technical, entrepreneurial people. Book a consultation or resume review with Nellie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- Tokens ---------- */
+  :root {
+    --bg: #ffffff;
+    --text: #161a20;
+    --text-muted: #5b6472;
+    --accent: #1b3a5c;
+    --accent-dark: #122a44;
+    --accent-tint: #eef3f9;
+    --border: #e4e8ee;
+    --radius: 10px;
+    --max-width: 1080px;
+
+    --font-display: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
+  }
+
+  /* ---------- Reset ---------- */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  p { margin: 0; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-small {
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+
+  /* ---------- Nav ---------- */
+  header.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--text);
+  }
+  .logo span { color: var(--accent); }
+
+  nav.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  nav.nav-links a {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  nav.nav-links a:hover { color: var(--text); }
+
+  .nav-cta { display: flex; align-items: center; gap: 28px; }
+
+  .nav-toggle { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 96px 0 88px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .hero h1 {
+    font-size: 44px;
+    margin: 18px 0 22px;
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero-tagline {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    max-width: 520px;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .hero-bio {
+    background: var(--accent-tint);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    font-size: 15.5px;
+    color: var(--text);
+  }
+
+  .hero-bio p { margin-bottom: 14px; }
+  .hero-bio p:last-child { margin-bottom: 0; }
+
+  .hero-bio .signoff {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Section shared ---------- */
+  section { padding: 80px 0; }
+  section:not(:last-of-type) { border-bottom: 1px solid var(--border); }
+
+  .section-head {
+    max-width: 620px;
+    margin-bottom: 44px;
+  }
+
+  .section-head h2 {
+    font-size: 32px;
+    margin: 14px 0 16px;
+  }
+
+  .section-intro {
+    color: var(--text-muted);
+    font-size: 16.5px;
+  }
+
+  /* ---------- Skills tags ---------- */
+  .skills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    background: var(--accent-tint);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 6px;
+  }
+
+  /* ---------- Service cards ---------- */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .service-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .service-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .service-card h3 {
+    font-size: 21px;
+    margin-bottom: 12px;
+  }
+
+  .service-card p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  .service-tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  /* ---------- Project ---------- */
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr 0.85fr;
+    gap: 48px;
+    align-items: start;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+  }
+
+  .project-card h3 {
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .project-card p {
+    color: var(--text);
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .project-card p:last-of-type { margin-bottom: 0; }
+
+  .stack-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .stack-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  .stack-item::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 56px 0 48px;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .footer-brand span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .footer-links a {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .project-card { grid-template-columns: 1fr; gap: 28px; }
+    .hero h1 { font-size: 36px; }
+  }
+
+  @media (max-width: 700px) {
+    .wrap { padding: 0 20px; }
+    nav.nav-links { display: none; }
+    .nav-cta .btn-secondary-label { display: none; }
+    .hero { padding: 56px 0 56px; }
+    section { padding: 56px 0; }
+    .project-card { padding: 28px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="wrap nav-inner">
+    <div class="logo">Mildly<span>automated</span></div>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#project">Project</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary btn-small" href="#book">Book a call</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero" id="about">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Technical Writer · AI &amp; Automation Coach</span>
+        <h1>I make <span class="accent">complicated things</span> make sense.</h1>
+        <p class="hero-tagline">10 years turning dense, technical information into content people actually use, now helping non-technical, entrepreneurial people get more out of AI tools and automation.</p>
+        <div class="hero-cta-row">
+          <a class="btn btn-primary" href="#book">Book a 60-min call</a>
+          <a class="btn btn-secondary" href="#services">See services</a>
+        </div>
+      </div>
+
+      <div class="hero-bio">
+        <p>I'm Nellie, a Senior Technical Writer with 10 years of experience turning complicated, technical information into content people can actually use.</p>
+        <p>My background spans technical writing management, software automation engineering, and documentation leadership, and I bring that same clarity to helping non-technical, entrepreneurial people make sense of AI tools and automation.</p>
+        <p>Through Mildlyautomated, I build things in public and show my work, favoring proof of concept over generic advice.</p>
+        <p class="signoff">If you want someone who can explain the technical stuff without making you feel behind, that's me.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services & Skills -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Services &amp; Skills</span>
+        <h2>How I can help</h2>
+        <p class="section-intro">I help ambitious, non-technical people get more out of AI tools and automation, whether that means 1:1 coaching, career support, or hands-on content strategy. I skip the buzzwords and theory. I'm focused on whether something actually works for you.</p>
+        <div class="skills-row">
+          <span class="skill-tag">Technical Writing</span>
+          <span class="skill-tag">Content Strategy</span>
+          <span class="skill-tag">Documentation Systems</span>
+          <span class="skill-tag">No-Code Builds</span>
+          <span class="skill-tag">AI Tooling</span>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-tag">1:1 Session</span>
+          <h3>60-Minute Consultation</h3>
+          <p>Built for whatever you're stuck on: tools, workflows, content strategy, or career moves. We spend the hour on your actual problem, not a generic framework.</p>
+          <a class="btn btn-secondary btn-small" href="#book">Book this session</a>
+        </div>
+
+        <div class="service-card">
+          <span class="service-tag">Career Support</span>
+          <h3>Tech Writing Resume Review</h3>
+          <p>A line-by-line review of your resume from someone who's hired and managed technical writers, built for people trying to break into or move up in the field.</p>
+          <a class="btn btn-secondary btn-small" href="#book">Book this review</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Project -->
+  <section id="project">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Featured Project</span>
+        <h2>A booking system that runs itself</h2>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <h3>Cal.com + Stripe Booking System</h3>
+          <p>When I started taking on paid 1:1 work through Mildlyautomated, I needed a way to handle bookings and payments without hiring a developer or adding tools I didn't need yet.</p>
+          <p>I built a booking system using Cal.com connected directly to Stripe, synced with my existing Google Calendar and hosted on Netlify, so people can book and pay for a consultation or resume review in a single step.</p>
+          <p>It's a small build, but it's the backbone of how I take on client work now, proof that you don't need a complicated stack to start monetizing what you know.</p>
+        </div>
+
+        <div>
+          <span class="stack-label">Stack</span>
+          <div class="stack-list">
+            <div class="stack-item">Cal.com</div>
+            <div class="stack-item">Stripe</div>
+            <div class="stack-item">Google Calendar</div>
+            <div class="stack-item">Netlify</div>
+          </div>
+          <a class="btn btn-primary" href="#book">Book a call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">Mildly<span>automated</span></div>
+      <div class="footer-links">
+        <a href="https://instagram.com/mildlyautomated" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@mildlyautomated" target="_blank" rel="noopener">TikTok</a>
+        <a href="#book">Book a call</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Mildlyautomated. All rights reserved.</span>
+      <span>Built in public, one workflow at a time.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
