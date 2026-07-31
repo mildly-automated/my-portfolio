@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mildlyautomated | Nellie, Technical Writer & AI/Automation Coach</title>
-<meta name="description" content="Technical writing, AI tooling, and automation coaching for non-technical, entrepreneurial people. Book a consultation or resume review with Nellie.">
+<title>Mildlyautomated | Nellie's Content Portfolio</title>
+<meta name="description" content="Short-form content that makes AI tools and tech feel doable for non-technical, entrepreneurial people. Portfolio of Mildlyautomated's video series and projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -18,6 +18,8 @@
     --accent: #1b3a5c;
     --accent-dark: #122a44;
     --accent-tint: #eef3f9;
+    --accent-2: #1f8a70;
+    --accent-2-tint: #e9f5f2;
     --border: #e4e8ee;
     --radius: 10px;
     --max-width: 1080px;
@@ -245,6 +247,120 @@
     font-size: 16.5px;
   }
 
+  /* ---------- Video grid ---------- */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 8px;
+  }
+
+  .video-card {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--accent-dark);
+    aspect-ratio: 9 / 16;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+
+  .video-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .video-media video, .video-media iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+    display: block;
+    pointer-events: none;
+  }
+
+  .video-card.active .video-media video,
+  .video-card.active .video-media iframe {
+    pointer-events: auto;
+  }
+
+  .video-card .play-badge {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(18,42,68,0.05) 0%, rgba(18,42,68,0.55) 100%);
+    transition: background 0.15s ease, opacity 0.2s ease;
+  }
+
+  .video-card:hover .play-badge { background: linear-gradient(180deg, rgba(18,42,68,0.15) 0%, rgba(18,42,68,0.7) 100%); }
+
+  .video-card.active .play-badge {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .play-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(18,42,68,0.28);
+    transition: transform 0.15s ease;
+  }
+
+  .video-card:hover .play-icon { transform: scale(1.08); }
+
+  .play-icon::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent var(--accent);
+    margin-left: 3px;
+  }
+
+  .video-card .video-label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .video-card.active .video-label { opacity: 0; }
+
+  .video-card .video-tag {
+    display: inline-block;
+    background: var(--accent-2);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .video-card.active .video-tag { opacity: 0; }
+
   /* ---------- Skills tags ---------- */
   .skills-row {
     display: flex;
@@ -414,6 +530,7 @@
     .services-grid { grid-template-columns: 1fr; }
     .project-card { grid-template-columns: 1fr; gap: 28px; }
     .hero h1 { font-size: 36px; }
+    .video-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   @media (max-width: 700px) {
@@ -424,6 +541,7 @@
     section { padding: 56px 0; }
     .project-card { padding: 28px; }
     .footer-inner { flex-direction: column; align-items: flex-start; }
+    .video-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   }
 </style>
 </head>
@@ -434,12 +552,9 @@
     <div class="logo">Mildly<span>automated</span></div>
     <nav class="nav-links" aria-label="Primary">
       <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#project">Project</a>
+      <a href="#content">Content</a>
+      <!--<a href="#project">Project</a> -->
     </nav>
-    <div class="nav-cta">
-      <a class="btn btn-primary btn-small" href="#book">Book a call</a>
-    </div>
   </div>
 </header>
 
@@ -449,59 +564,62 @@
   <section class="hero" id="about">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">Technical Writer · AI &amp; Automation Coach</span>
-        <h1>I make <span class="accent">complicated things</span> make sense.</h1>
-        <p class="hero-tagline">10 years turning dense, technical information into content people actually use, now helping non-technical, entrepreneurial people get more out of AI tools and automation.</p>
+        <h1>I break down tech so your customers don't feel <span class="accent">left behind</span>.</h1>
+        <p class="hero-tagline">10 years turning confusing tech tools into something you can actually use, and stop feeling stuck.</p>
         <div class="hero-cta-row">
-          <a class="btn btn-primary" href="#book">Book a 60-min call</a>
-          <a class="btn btn-secondary" href="#services">See services</a>
+          <a class="btn btn-primary" href="#content">Watch my work</a>
         </div>
       </div>
 
       <div class="hero-bio">
         <p>I'm Nellie, a Senior Technical Writer with 10 years of experience turning complicated, technical information into content people can actually use.</p>
-        <p>My background spans technical writing management, software automation engineering, and documentation leadership, and I bring that same clarity to helping non-technical, entrepreneurial people make sense of AI tools and automation.</p>
-        <p>Through Mildlyautomated, I build things in public and show my work, favoring proof of concept over generic advice.</p>
+        <p>My background spans technical writing management, software automation engineering, and documentation leadership — and I bring that same clarity to helping non-technical people build confidence with AI tools and automation.</p>
+        <p>Through Mildlyautomated, I slow processes down and talk through them out loud, so we're all learning at the same pace.</p>
         <p class="signoff">If you want someone who can explain the technical stuff without making you feel behind, that's me.</p>
       </div>
     </div>
   </section>
 
-  <!-- Services & Skills -->
-  <section id="services">
+  <!-- Content / Videos -->
+  <section id="content">
     <div class="wrap">
       <div class="section-head">
-        <span class="eyebrow">Services &amp; Skills</span>
-        <h2>How I can help</h2>
-        <p class="section-intro">I help ambitious, non-technical people get more out of AI tools and automation, whether that means 1:1 coaching, career support, or hands-on content strategy. I skip the buzzwords and theory. I'm focused on whether something actually works for you.</p>
-        <div class="skills-row">
-          <span class="skill-tag">Technical Writing</span>
-          <span class="skill-tag">Content Strategy</span>
-          <span class="skill-tag">Documentation Systems</span>
-          <span class="skill-tag">No-Code Builds</span>
-          <span class="skill-tag">AI Tooling</span>
-        </div>
+        <span class="eyebrow">Watch the Work</span>
+        <h2>Tap any clip to play</h2>
+        <p class="section-intro">Short-form content that turns intimidating tools into "oh, I can actually do this." A few from the current series, tap to watch.</p>
       </div>
 
-      <div class="services-grid">
-        <div class="service-card">
-          <span class="service-tag">1:1 Session</span>
-          <h3>60-Minute Consultation</h3>
-          <p>Built for whatever you're stuck on: tools, workflows, content strategy, or career moves. We spend the hour on your actual problem, not a generic framework.</p>
-          <a class="btn btn-secondary btn-small" href="#book">Book this session</a>
+      <div class="video-grid">
+        <div class="video-card" data-video="videos\big_ai_ttimes.mp4">
+          <span class="video-tag">Software features</span>
+          <div class="play-badge"><div class="play-icon"></div></div>
+          <div class="video-label">Host your portfolio for free</div>
         </div>
-
-        <div class="service-card">
-          <span class="service-tag">Career Support</span>
-          <h3>Tech Writing Resume Review</h3>
-          <p>A line-by-line review of your resume from someone who's hired and managed technical writers, built for people trying to break into or move up in the field.</p>
-          <a class="btn btn-secondary btn-small" href="#book">Book this review</a>
+        <div class="video-card" data-video="videos/github.mp4">
+          <span class="video-tag">Series</span>
+          <div class="play-badge"><div class="play-icon"></div></div>
+          <div class="video-label">Agentic AI, explained</div>
+        </div>
+        <div class="video-card" data-video="videos/netlifly.mp4">
+          <span class="video-tag">Software demo</span>
+          <div class="play-badge"><div class="play-icon"></div></div>
+          <div class="video-label">The site that got me my first client</div>
+        </div>
+         <div class="video-card" data-video="videos/insta_video.mp4">
+          <span class="video-tag">Test insta</span>
+          <div class="play-badge"><div class="play-icon"></div></div>
+          <div class="video-label">The site that got me my first client</div>
+        </div>
+        <div class="video-card" data-video="videos/series_dayone.mp4">
+          <span class="video-tag">Series</span>
+          <div class="play-badge"><div class="play-icon"></div></div>
+          <div class="video-label">7 Things I Wish I Learned</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Project -->
+  <!-- Featured Project 
   <section id="project">
     <div class="wrap">
       <div class="section-head">
@@ -525,12 +643,11 @@
             <div class="stack-item">Google Calendar</div>
             <div class="stack-item">Netlify</div>
           </div>
-          <a class="btn btn-primary" href="#book">Book a call</a>
         </div>
       </div>
     </div>
   </section>
-
+-->
 </main>
 
 <footer>
@@ -538,9 +655,9 @@
     <div class="footer-inner">
       <div class="footer-brand">Mildly<span>automated</span></div>
       <div class="footer-links">
+        <a href="mailto:spade.nellie@gmail.com">spade.nellie@gmail.com</a>
         <a href="https://instagram.com/mildlyautomated" target="_blank" rel="noopener">Instagram</a>
         <a href="https://tiktok.com/@mildlyautomated" target="_blank" rel="noopener">TikTok</a>
-        <a href="#book">Book a call</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -549,6 +666,110 @@
     </div>
   </div>
 </footer>
+
+<script>
+  (function () {
+
+    function getYouTubeId(url) {
+      var shortsMatch = url.match(/youtube\.com\/shorts\/([^?&/]+)/);
+      if (shortsMatch) return shortsMatch[1];
+      var watchMatch = url.match(/[?&]v=([^&]+)/);
+      if (watchMatch) return watchMatch[1];
+      var shortMatch = url.match(/youtu\.be\/([^?&/]+)/);
+      if (shortMatch) return shortMatch[1];
+      var embedMatch = url.match(/youtube\.com\/embed\/([^?&/]+)/);
+      if (embedMatch) return embedMatch[1];
+      return null;
+    }
+
+    function getInstagramId(url) {
+      var reelMatch = url.match(/instagram\.com\/reel[s]?\/([^?&/]+)/);
+      if (reelMatch) return reelMatch[1];
+      var postMatch = url.match(/instagram\.com\/p\/([^?&/]+)/);
+      if (postMatch) return postMatch[1];
+      return null;
+    }
+
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.video-card'));
+
+    cards.forEach(function (card) {
+      var src = card.getAttribute('data-video');
+      var ytId = getYouTubeId(src);
+      var igId = getInstagramId(src);
+
+      var media = document.createElement('div');
+      media.className = 'video-media';
+
+      if (ytId) {
+        // Muted, looping, silent preview — no controls until clicked
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/' + ytId + '?autoplay=1&mute=1&loop=1&playlist=' + ytId + '&controls=0&modestbranding=1&playsinline=1&rel=0';
+        iframe.setAttribute('allow', 'autoplay; encrypted-media');
+        iframe.setAttribute('frameborder', '0');
+        media.appendChild(iframe);
+        card.dataset.type = 'youtube';
+        card.dataset.ytId = ytId;
+      } else if (igId) {
+        // Instagram doesn't support a silent autoplay preview without their embed script,
+        // so this stays a static thumbnail until clicked, then loads inline (no popup).
+        card.dataset.type = 'instagram';
+        card.dataset.igId = igId;
+      } else {
+        // Local mp4 — true silent looping preview, just like a feed
+        var video = document.createElement('video');
+        video.src = src;
+        video.muted = true;
+        video.autoplay = true;
+        video.loop = true;
+        video.playsInline = true;
+        media.appendChild(video);
+        card.dataset.type = 'mp4';
+        video.play().catch(function () {});
+      }
+
+      card.insertBefore(media, card.firstChild);
+    });
+
+    function deactivateAll(except) {
+      cards.forEach(function (card) {
+        if (card === except) return;
+        card.classList.remove('active');
+        var v = card.querySelector('video');
+        if (v) { v.muted = true; v.removeAttribute('controls'); }
+        if (card.dataset.type === 'youtube') {
+          var f = card.querySelector('iframe');
+          if (f) f.src = 'https://www.youtube.com/embed/' + card.dataset.ytId + '?autoplay=1&mute=1&loop=1&playlist=' + card.dataset.ytId + '&controls=0&modestbranding=1&playsinline=1&rel=0';
+        }
+      });
+    }
+
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        if (card.classList.contains('active')) return;
+
+        deactivateAll(card);
+        card.classList.add('active');
+
+        if (card.dataset.type === 'mp4') {
+          var video = card.querySelector('video');
+          video.muted = false;
+          video.controls = true;
+          video.play().catch(function () {});
+        } else if (card.dataset.type === 'youtube') {
+          var iframe = card.querySelector('iframe');
+          iframe.src = 'https://www.youtube.com/embed/' + card.dataset.ytId + '?autoplay=1&controls=1&playsinline=1&rel=0';
+        } else if (card.dataset.type === 'instagram') {
+          var media = card.querySelector('.video-media');
+          var igFrame = document.createElement('iframe');
+          igFrame.src = 'https://www.instagram.com/reel/' + card.dataset.igId + '/embed';
+          igFrame.setAttribute('allowfullscreen', 'true');
+          media.innerHTML = '';
+          media.appendChild(igFrame);
+        }
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
